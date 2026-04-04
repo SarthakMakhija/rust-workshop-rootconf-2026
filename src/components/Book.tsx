@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import { 
   WorkshopCover,
@@ -104,7 +104,7 @@ const Book: React.FC = () => {
     setCurrentPage(e.data);
   }, []);
 
-  const nextPrevPage = (direction: 'next' | 'prev') => {
+  const nextPrevPage = useCallback((direction: 'next' | 'prev') => {
     if (bookRef.current) {
       if (direction === 'next') {
         bookRef.current.pageFlip().flipNext();
@@ -112,7 +112,20 @@ const Book: React.FC = () => {
         bookRef.current.pageFlip().flipPrev();
       }
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        nextPrevPage('next');
+      } else if (e.key === 'ArrowLeft') {
+        nextPrevPage('prev');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextPrevPage]);
 
   return (
     <div className="book-container">
