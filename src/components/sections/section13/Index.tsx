@@ -20,6 +20,23 @@ export const Section13Cover = forwardRef<HTMLDivElement, { number: number }>((pr
   );
 });
 
+export const Stage13Roadmap = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-left">
+      <h2 className="section-title">Stage 13 Roadmap</h2>
+      <div className="content-block">
+        <ul style={{ paddingLeft: '1.5rem', lineHeight: '2.2' }}>
+          <li><strong>The Shutdown Problem</strong>: Managing object lifecycle.</li>
+          <li><strong>The Runtime Tax</strong>: Why boolean flags are suboptimal.</li>
+          <li><strong>Ownership as Termination</strong>: Leveraging <code>self</code>.</li>
+          <li><strong>Type-State Pattern</strong>: Formal state encoding.</li>
+          <li><strong>Zero-Cost Safety</strong>: Compile-time proofs of correctness.</li>
+        </ul>
+      </div>
+    </Page>
+  );
+});
+
 export const ShutdownIntro = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
     <Page number={props.number} ref={ref} className="page-right">

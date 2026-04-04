@@ -20,6 +20,24 @@ export const Section8Cover = forwardRef<HTMLDivElement, { number: number }>((pro
   );
 });
 
+export const Stage8Roadmap = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-left">
+      <h2 className="section-title">Stage 8 Roadmap</h2>
+      <div className="content-block">
+        <ul style={{ paddingLeft: '1.5rem', lineHeight: '2.2' }}>
+          <li><strong>The Cloning Tax</strong>: Why Arc isn't always the finish line.</li>
+          <li><strong>Custom Ref Pattern</strong>: Bundling guards and pointers.</li>
+          <li><strong>Lifetime Hierarchy</strong>: Understanding dependency chains.</li>
+          <li><strong>The Pointer Trick</strong>: Mastering <code>*const V</code>.</li>
+          <li><strong>Unsafe Deref</strong>: Bridging the gap with the <code>Deref</code> trait.</li>
+          <li><strong>Verification</strong>: Proving Zero-Allocation access.</li>
+        </ul>
+      </div>
+    </Page>
+  );
+});
+
 export const Section8Intro = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
     <Page number={props.number} ref={ref} className="page-right">

@@ -20,6 +20,23 @@ export const Section9Cover = forwardRef<HTMLDivElement, { number: number }>((pro
   );
 });
 
+export const Stage9Roadmap = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-left">
+      <h2 className="section-title">Stage 9 Roadmap</h2>
+      <div className="content-block">
+        <ul style={{ paddingLeft: '1.5rem', lineHeight: '2.2' }}>
+          <li><strong>Beyond Scope</strong>: Why thread::scope isn't always portable.</li>
+          <li><strong>The Ownership Wall</strong>: The paradox of shared stack data.</li>
+          <li><strong>Arc&lt;Cache&gt;</strong>: Distributing ownership across spawned threads.</li>
+          <li><strong>Send & Sync traits</strong>: Markers for safety in multithreading.</li>
+          <li><strong>Verification</strong>: Scaling across thread boundaries.</li>
+        </ul>
+      </div>
+    </Page>
+  );
+});
+
 export const BeyondScope = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
     <Page number={props.number} ref={ref} className="page-right">

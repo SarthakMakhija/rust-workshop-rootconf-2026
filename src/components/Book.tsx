@@ -65,6 +65,7 @@ import {
 } from './sections/section7/Index';
 import {
   Section8Cover,
+  Stage8Roadmap,
   Section8Intro,
   CustomRefPattern,
   LifetimeAnchor,
@@ -76,6 +77,7 @@ import {
 } from './sections/section8/Index';
 import {
   Section9Cover,
+  Stage9Roadmap,
   BeyondScope,
   TheOwnershipWall,
   FoundationOfConcurrency,
@@ -88,6 +90,7 @@ import { Section11Cover } from './sections/section11/Index';
 import { Section12Cover } from './sections/section12/Index';
 import {
   Section13Cover,
+  Stage13Roadmap,
   ShutdownIntro,
   NaiveApproach,
   OwnershipTermination,
@@ -216,37 +219,40 @@ const Book: React.FC = () => {
 
         {/* Stage 8 */}
         <Section8Cover number={53} />
-        <Section8Intro number={54} />
-        <CustomRefPattern number={55} />
-        <LifetimeAnchor number={56} />
-        <ThePointerTrick number={57} />
-        <UnsafeDeref number={58} />
-        <LockTradeoff number={59} />
-        <ZeroCopyTests number={60} />
-        <Section8Summary number={61} />
+        <Stage8Roadmap number={54} />
+        <Section8Intro number={55} />
+        <CustomRefPattern number={56} />
+        <LifetimeAnchor number={57} />
+        <ThePointerTrick number={58} />
+        <UnsafeDeref number={59} />
+        <LockTradeoff number={60} />
+        <ZeroCopyTests number={61} />
+        <Section8Summary number={62} />
 
         {/* Stage 9 */}
-        <Section9Cover number={62} />
-        <BeyondScope number={63} />
-        <TheOwnershipWall number={64} />
-        <FoundationOfConcurrency number={65} />
-        <SharedCacheArc number={66} />
-        <SendAndSync number={67} />
-        <FinalVerification number={68} />
+        <Section9Cover number={63} />
+        <Stage9Roadmap number={64} />
+        <BeyondScope number={65} />
+        <TheOwnershipWall number={66} />
+        <FoundationOfConcurrency number={67} />
+        <SharedCacheArc number={68} />
+        <SendAndSync number={69} />
+        <FinalVerification number={70} />
 
         {/* Placeholders for 10, 11, 12 */}
-        <Section10Cover number={69} />
-        <Section11Cover number={70} />
-        <Section12Cover number={71} />
+        <Section10Cover number={71} />
+        <Section11Cover number={72} />
+        <Section12Cover number={73} />
 
         {/* Stage 13 */}
-        <Section13Cover number={72} />
-        <ShutdownIntro number={73} />
-        <NaiveApproach number={74} />
-        <OwnershipTermination number={75} />
-        <TypeStateConcept number={76} />
-        <CompilerAsGuard number={77} />
-        <Section13Summary number={78} />
+        <Section13Cover number={74} />
+        <Stage13Roadmap number={75} />
+        <ShutdownIntro number={76} />
+        <NaiveApproach number={77} />
+        <OwnershipTermination number={78} />
+        <TypeStateConcept number={79} />
+        <CompilerAsGuard number={80} />
+        <Section13Summary number={81} />
       </HTMLFlipBook>
 
       <div className="controls">
