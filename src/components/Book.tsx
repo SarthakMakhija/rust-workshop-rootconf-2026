@@ -25,6 +25,16 @@ import {
   TypeSafeCache,
   SafetyVerification
 } from './sections/section2/Index';
+import {
+  Section3Cover,
+  Section3Intro,
+  IntroducingGenerics,
+  TraitBounds,
+  GenericSyntax,
+  TheBorrowTrait,
+  GenericCacheImpl,
+  GenericTests
+} from './sections/section3/Index';
 
 const Book: React.FC = () => {
   const bookRef = useRef<any>(null);
@@ -88,6 +98,16 @@ const Book: React.FC = () => {
         <DerivingTraits number={18} />
         <TypeSafeCache number={19} />
         <SafetyVerification number={20} />
+
+        {/* Section 3 */}
+        <Section3Cover number={21} />
+        <Section3Intro number={22} />
+        <IntroducingGenerics number={23} />
+        <TraitBounds number={24} />
+        <GenericSyntax number={25} />
+        <TheBorrowTrait number={26} />
+        <GenericCacheImpl number={27} />
+        <GenericTests number={28} />
       </HTMLFlipBook>
 
       <div className="controls">
