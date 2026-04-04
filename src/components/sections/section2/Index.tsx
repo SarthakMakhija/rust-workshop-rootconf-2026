@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
+import CodeBlock from '../../CodeBlock';
 
 export const Section2Cover = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
@@ -9,9 +10,9 @@ export const Section2Cover = forwardRef<HTMLDivElement, { number: number }>((pro
         <div className="cover-decoration" />
         <h1 className="cover-title">STAGE 2</h1>
         <div className="cover-decoration" />
-        <div className="cover-subtitle">Domain Modeling & Safety</div>
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
-          Preventing logical errors at compile time.
+        <div className="cover-subtitle">Domain Modeling</div>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
+          From Strings to Type-Safe Identifiers.
         </div>
       </div>
       <div className="page-number">{props.number}</div>
@@ -57,18 +58,14 @@ export const PrimitiveObsession = forwardRef<HTMLDivElement, { number: number }>
         Consider our current <span className="keyword">put</span> signature:
       </div>
       <div className="code-snippet">
-        <pre>
-          {`fn put(&mut self, key: String, value: String)`}
-        </pre>
+        <CodeBlock code={`fn put(&mut self, key: String, value: String)`} />
       </div>
       <div className="content-block">
         Because both are <span className="keyword">String</span>, the compiler cannot stop you from accidentally swapping them:
       </div>
       <div className="code-snippet">
-        <pre style={{ color: '#c62828' }}>
-          {`// Logical Error: Swapped key and value
-cache.put(value_string, key_string); `}
-        </pre>
+        <CodeBlock code={`// Logical Error: Swapped key and value
+cache.put(value_string, key_string); `} className="error-text" />
       </div>
       <div className="content-block">
         To the compiler, they are just the same type. This is a <strong>Runtime Error waiting to happen unless detected by unit-tests</strong>.
@@ -88,10 +85,8 @@ export const NewTypePattern = forwardRef<HTMLDivElement, { number: number }>((pr
         In Rust, we can create thin wrappers around types called the <span className="keyword">NewType Pattern</span>.
       </div>
       <div className="code-snippet">
-        <pre>
-          {`struct CacheKey(String);
-struct CacheValue(String);`}
-        </pre>
+        <CodeBlock code={`struct CacheKey(String);
+struct CacheValue(String);`} />
       </div>
       <div className="content-block">
         <h3 style={{ fontSize: '1.1rem', marginBottom: '0.4rem' }}>Zero Cost at Runtime</h3>
@@ -109,16 +104,14 @@ export const DerivingTraits = forwardRef<HTMLDivElement, { number: number }>((pr
         A <span className="keyword">Trait</span> is a contract that defines what a type can do (similar to Interfaces). To use <code>CacheKey</code> in a HashMap, we need behavioral traits:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[derive(PartialEq, Eq, Hash)]
-struct CacheKey(String);`}
-        </pre>
+        <CodeBlock code={`#[derive(PartialEq, Eq, Hash)]
+struct CacheKey(String);`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         <h3 style={{ fontSize: '1rem', marginBottom: '0.3rem' }}>The 'Derive' Keyword</h3>
         Instead of writing the logic ourselves, <code>#[derive]</code> is a macro that tells the compiler: "Generate the implementation for these traits automatically."
       </div>
-      <div className="content-block" style={{ fontSize: '0.85rem', background: 'rgba(0,0,0,0.03)', padding: '0.5rem' }}>
+      <div className="explanation-box">
         <ul style={{ paddingLeft: '1.2rem' }}>
           <li><strong>PartialEq/Eq</strong>: Allows the HashMap to check if two keys are equal.</li>
           <li><strong>Hash</strong>: Allows the HashMap to calculate the "bucket" address where this key's value should be stored.</li>
@@ -136,17 +129,15 @@ export const TypeSafeCache = forwardRef<HTMLDivElement, { number: number }>((pro
         Let's update our Cache to use these specific types:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`struct Cache {
+        <CodeBlock code={`struct Cache {
     data: HashMap<CacheKey, CacheValue>,
 }
 
 impl Cache {
-    fn put(&mut self, key: CacheKey, value: CacheValue) {
+    fn put(&mut self, key: CacheKey, value: V) {
         self.data.insert(key, value);
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         Now, the signature is <strong>unambiguous</strong>. You cannot pass a value where a key is expected.
@@ -163,8 +154,7 @@ export const SafetyVerification = forwardRef<HTMLDivElement, { number: number }>
         The true power of this pattern is felt during compilation:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[test]
+        <CodeBlock code={`#[test]
 fn should_fail_to_swap() {
     let key = CacheKey("Sarthak".to_string());
     let val = CacheValue("Developer".to_string());
@@ -172,10 +162,9 @@ fn should_fail_to_swap() {
     // COMPILER ERROR!
     // Expected CacheKey, found CacheValue
     cache.put(val, key); 
-}`}
-        </pre>
+}`} className="error-text" style={{ fontSize: '0.8rem' }} />
       </div>
-      <div className="content-block" style={{ fontStyle: 'italic', marginTop: '1.5rem', color: '#2e7d32' }}>
+      <div className="content-block" style={{ fontStyle: 'italic', marginTop: '1rem', color: 'var(--success-color)' }}>
         <strong>"If it compiles, it works."</strong>
         <br />
         We have turned a logical error into a compiler error.

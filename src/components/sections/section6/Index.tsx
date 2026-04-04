@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
+import CodeBlock from '../../CodeBlock';
 
 export const Section6Cover = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
@@ -10,7 +11,7 @@ export const Section6Cover = forwardRef<HTMLDivElement, { number: number }>((pro
         <h1 className="cover-title">STAGE 6</h1>
         <div className="cover-decoration" />
         <div className="cover-subtitle">Concurrency & Thread Safety</div>
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           Protecting shared data in a multi-threaded world.
         </div>
       </div>
@@ -27,7 +28,7 @@ export const Section6Intro = forwardRef<HTMLDivElement, { number: number }>((pro
         Our cache is now generic and type-safe, but it's not **Thread Safe**. If two threads try to modify it at once, we'll get a compilation error.
       </div>
       <div className="content-block">
-        <ol style={{ paddingLeft: '1.5rem', lineHeight: '2.2' }}>
+        <ol style={{ paddingLeft: '1.25rem', lineHeight: '1.8' }}>
           <li><strong>Internal Mutability</strong>: Introducing <code>RwLock</code>.</li>
           <li><strong>RAII Guards</strong>: Automatic locking and unlocking.</li>
           <li><strong>The Deref Magic</strong>: How guards behave like data.</li>
@@ -50,7 +51,7 @@ export const ConcurrencyIntro = forwardRef<HTMLDivElement, { number: number }>((
         <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>The Problem:</h3>
         If two threads attempt to modify the <code>HashMap</code> at the same time, we encounter <strong>Data Races</strong>. Rust's borrow checker prevents this at compile-time.
       </div>
-      <div className="content-block" style={{ textAlign: 'center', margin: '2rem 0', fontWeight: 'bold', color: '#c62828' }}>
+      <div className="content-block" style={{ textAlign: 'center', margin: '1rem 0', fontWeight: 'bold', color: 'var(--error-color)' }}>
         "Either MANY readers OR ONE writer."
       </div>
       <div className="content-block">
@@ -68,14 +69,12 @@ export const CompilationError = forwardRef<HTMLDivElement, { number: number }>((
         Why can't we just share a <code>&mut Cache</code> across threads using a modern scoped thread API?
       </div>
       <div className="code-snippet">
-        <pre style={{ color: '#c62828', fontSize: '0.75rem' }}>
-          {`thread::scope(|s| {
+        <CodeBlock code={`thread::scope(|s| {
     s.spawn(|| cache.put(1, "A".to_string()));
     s.spawn(|| cache.put(2, "B".to_string())); // ERROR!
 });
 
-error[E0499]: cannot borrow 'cache' as mutable more than once`}
-        </pre>
+error[E0499]: cannot borrow 'cache' as mutable more than once`} className="error-text" style={{ fontSize: '0.75rem' }} />
       </div>
       <div className="content-block">
         The compiler enforces the <strong>Shared XOR Mutable</strong> rule. This is the heart of Rust's safety:
@@ -85,7 +84,7 @@ error[E0499]: cannot borrow 'cache' as mutable more than once`}
           <li><strong>Shared References (&T)</strong>: Many readers allowed.</li>
           <li><strong>Mutable Reference (&mut T)</strong>: Exactly one writer allowed.</li>
         </ul>
-        <p style={{ marginTop: '1rem', fontWeight: 'bold', color: '#c62828', textAlign: 'center' }}>
+        <p className="error-text" style={{ marginTop: '0.5rem', textAlign: 'center' }}>
           BUT NEVER BOTH AT THE SAME TIME.
         </p>
       </div>
@@ -104,13 +103,11 @@ export const ThreadSafeWrapper = forwardRef<HTMLDivElement, { number: number }>(
         To allow multiple threads to access our cache, we wrap our HashMap in a "Synchronization Primitive". Let's use an <span className="keyword">RwLock</span> (Read-Write Lock).
       </div>
       <div className="code-snippet">
-        <pre>
-          {`use std::sync::RwLock;
+        <CodeBlock code={`use std::sync::RwLock;
 
 struct Cache<K, V> {
     data: RwLock<HashMap<K, V>>,
-}`}
-        </pre>
+}`} />
       </div>
       <div className="content-block">
         An <code>RwLock</code> allows <b>many readers</b> OR <b>one writer</b> at a time. It successfully turns shared access into exclusive access when needed.
@@ -127,8 +124,7 @@ export const RAIIGuards = forwardRef<HTMLDivElement, { number: number }>((props,
         In Rust, you don't manually call <code>unlock()</code>. Instead, when you call <code>.write()</code>, it returns a <b>Guard</b>.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`fn put(&self, key: K, value: V) {
+        <CodeBlock code={`fn put(&self, key: K, value: V) {
     // Acquire the write lock
     let mut guard = self.data.write().unwrap();
     
@@ -136,8 +132,7 @@ export const RAIIGuards = forwardRef<HTMLDivElement, { number: number }>((props,
     guard.insert(key, value);
     
     // Guard goes out of scope -> Lock is released!
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         The lock's lifetime is tied to the <b>Guard Object</b>. When the guard is dropped, the lock is automatically released.
@@ -154,8 +149,7 @@ export const InnerLockingDrop = forwardRef<HTMLDivElement, { number: number }>((
         Let's look at the actual definition of a <code>Guard</code> in the Rust Standard Library:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.75rem' }}>
-          {`pub struct RwLockWriteGuard<'a, T: ?Sized + 'a> {
+        <CodeBlock code={`pub struct RwLockWriteGuard<'a, T: ?Sized + 'a> {
     lock: &'a RwLock<T>,
 }
 
@@ -166,8 +160,7 @@ impl<T: ?Sized> Drop for RwLockWriteGuard<'_, T> {
             self.lock.inner.write_unlock();
         }
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.75rem' }} />
       </div>
       <div className="content-block" style={{ fontSize: '0.9rem' }}>
         The Guard holds a <b>reference</b> to the original lock. When the Guard is <b>dropped</b>, its <code>drop()</code> method is called, which finally unlocks the <code>RwLock</code> for other threads.
@@ -187,10 +180,8 @@ export const TheDerefTrait = forwardRef<HTMLDivElement, { number: number }>((pro
         The secret is the <span className="keyword">Deref</span> trait. It allows smart pointers (and Guards) to behave like the data they wrap.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`// Internally, it's essentially:
-(*guard).insert(key, value);`}
-        </pre>
+        <CodeBlock code={`// Internally, it's essentially:
+(*guard).insert(key, value);`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block" style={{ fontStyle: 'italic', borderLeft: '2px solid #ccc', paddingLeft: '1rem', fontSize: '0.9rem' }}>
         Rust automatically "dereferences" the guard to the underlying <code>HashMap</code>, giving us a seamless developer experience.
@@ -207,10 +198,8 @@ export const TheUnwrapMystery = forwardRef<HTMLDivElement, { number: number }>((
         If a thread holding the lock **panics**, the lock becomes "Poisoned". Rust prevents other threads from accessing potentially inconsistent data.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.85rem' }}>
-          {`// .write() returns Result<Guard, PoisonError>
-let guard = self.data.write().unwrap();`}
-        </pre>
+        <CodeBlock code={`// .write() returns Result<Guard, PoisonError>
+let guard = self.data.write().unwrap();`} style={{ fontSize: '0.85rem' }} />
       </div>
       <div className="content-block">
         By calling <code>.unwrap()</code>, we say: "If the lock is poisoned, just panic my thread too, because the system is in an invalid state."
@@ -227,15 +216,13 @@ export const TheBrokenGet = forwardRef<HTMLDivElement, { number: number }>((prop
         Our previous <code>get</code> returned <code>Option{"<"}&V{">"}</code>. But with a Lock, the compiler sees a fatal flaw:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.75rem' }}>
-          {`fn get(&self, key: &K) -> Option<&V> {
+        <CodeBlock code={`fn get(&self, key: &K) -> Option<&V> {
     // 1. Acquire the Read Lock
     let guard = self.data.read().unwrap();
     
     // 2. Point into the locked data
     guard.get(key) 
-} // 3. Guard is dropped -> Lock is RELEASED!`}
-        </pre>
+} // 3. Guard is dropped -> Lock is RELEASED!`} style={{ fontSize: '0.75rem' }} />
       </div>
       <div className="content-block">
         <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>The Lifetime Paradox</h3>
@@ -245,7 +232,7 @@ export const TheBrokenGet = forwardRef<HTMLDivElement, { number: number }>((prop
         <p style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
           If we return that reference after dropping the <code>Guard</code>, we are essentially accessing data that is no longer protected by the lock.
         </p>
-        <p style={{ fontSize: '0.85rem', marginTop: '0.5rem', fontStyle: 'italic', color: '#c62828' }}>
+        <p className="error-text" style={{ fontSize: '0.85rem', marginTop: '0.3rem', fontStyle: 'italic' }}>
           Wait! Another thread could now get a Write Lock and mutate the map while we are still holding that "dangling" reference!
         </p>
       </div>
@@ -261,8 +248,7 @@ export const OwnershipShift = forwardRef<HTMLDivElement, { number: number }>((pr
         To solve the lifetime paradox, we must return an <b>owned value</b>. This means we must **Clone** the data out of the cache before the guard is dropped.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.75rem' }}>
-          {`impl<K, V> Cache<K, V> 
+        <CodeBlock code={`impl<K, V> Cache<K, V> 
 where K: Hash + Eq, V: Clone 
 {
     fn get(&self, key: &K) -> Option<V> {
@@ -270,8 +256,7 @@ where K: Hash + Eq, V: Clone
         // Clone the value out BEFORE the guard is dropped
         guard.get(key).cloned() 
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.75rem' }} />
       </div>
       <div className="content-block">
         We've traded performance (cloning) for absolute memory safety and thread-safe access.
@@ -288,8 +273,7 @@ export const SafeCacheImpl = forwardRef<HTMLDivElement, { number: number }>((pro
         Breaking the implementation into explicit steps shows exactly how the data moves:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.75rem' }}>
-          {`fn get(&self, key: &K) -> Option<V> {
+        <CodeBlock code={`fn get(&self, key: &K) -> Option<V> {
     // 1. Acquire the guard
     let guard = self.data.read().unwrap();
     
@@ -301,8 +285,7 @@ export const SafeCacheImpl = forwardRef<HTMLDivElement, { number: number }>((pro
     
     // 4. Return the owned V (guard drops here)
     owned_val
-}`}
-        </pre>
+}`} style={{ fontSize: '0.75rem' }} />
       </div>
     </Page>
   );
@@ -316,8 +299,7 @@ export const ThreadSafeTests = forwardRef<HTMLDivElement, { number: number }>((p
         For now, let's verify it still works in a single thread with our new cloning API:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[test]
+        <CodeBlock code={`#[test]
 fn test_thread_safe_api() {
     let cache = Cache::new();
     cache.put(1, "ThreadSafe".to_string());
@@ -326,10 +308,9 @@ fn test_thread_safe_api() {
     let val: Option<String> = cache.get(&1);
     
     assert_eq!(val, Some("ThreadSafe".to_string()));
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
-      <div className="content-block" style={{ marginTop: '1.5rem', color: '#2e7d32' }}>
+      <div className="content-block" style={{ marginTop: '1rem', color: 'var(--success-color)' }}>
         We are now ready for the real challenge: **Multi-threaded Access!**
       </div>
     </Page>

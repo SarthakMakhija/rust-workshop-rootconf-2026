@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
+import CodeBlock from '../../CodeBlock';
 
 export const Section7Cover = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
@@ -10,7 +11,7 @@ export const Section7Cover = forwardRef<HTMLDivElement, { number: number }>((pro
         <h1 className="cover-title">STAGE 7</h1>
         <div className="cover-decoration" />
         <div className="cover-subtitle">The Performance Tax</div>
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           Optimizing with Atomic Reference Counting (Arc).
         </div>
       </div>
@@ -47,12 +48,10 @@ export const TheCloningTax = forwardRef<HTMLDivElement, { number: number }>((pro
         Our Stage 6 <code>get</code> solved the "Broken Get" problem by using <code>.cloned()</code>. While simple, it has a hidden cost:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`// Stage 6 Implementation
+        <CodeBlock code={`// Stage 6 Implementation
 fn get(&self, key: &K) -> Option<V> {
     self.data.read().unwrap().get(key).cloned() // <- COPIES ALL DATA
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         If <code>V</code> is an 8MB image, every lookup copies 8MB of memory. This is unsustainable for a high-performance system. Can we share the ownership instead of copying?
@@ -72,12 +71,10 @@ export const IntroducingArc = forwardRef<HTMLDivElement, { number: number }>((pr
         An <code>Arc</code> is a smart pointer that wraps your data and keeps track of how many people are using it.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.85rem' }}>
-          {`use std::sync::Arc;
+        <CodeBlock code={`use std::sync::Arc;
 
 let shared_data = Arc::new("Big Data".to_string());
-let thread_handle = Arc::clone(&shared_data); // Cheap!`}
-        </pre>
+let thread_handle = Arc::clone(&shared_data); // Cheap!`} style={{ fontSize: '0.85rem' }} />
       </div>
       <div className="content-block">
         When the last <code>Arc</code> handle is dropped, Rust automatically cleans up the data.
@@ -94,8 +91,7 @@ export const ArcMechanics = forwardRef<HTMLDivElement, { number: number }>((prop
         Internally, <code>Arc</code> is a pointer to an <code>ArcInner</code> struct on the heap, which stores both the reference counts and your data.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`pub struct Arc<T: ?Sized> {
+        <CodeBlock code={`pub struct Arc<T: ?Sized> {
     ptr: NonNull<ArcInner<T>>,
 }
 
@@ -103,22 +99,19 @@ struct ArcInner<T: ?Sized> {
     strong: atomic::AtomicUsize, // The "Strong" count
     weak: atomic::AtomicUsize,   // For weak pointers
     data: T,                     // Your data!
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block" style={{ fontSize: '0.9rem' }}>
         When you clone an <code>Arc</code>, Rust doesn't touch your data. It just increments the <code>strong</code> counter using an atomic operation:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`impl<T: ?Sized> Clone for Arc<T> {
+        <CodeBlock code={`impl<T: ?Sized> Clone for Arc<T> {
     fn clone(&self) -> Arc<T> {
         // Atomic increment: safe across threads!
         self.inner().strong.fetch_add(1, Relaxed);
         unsafe { Self::from_inner(self.ptr) }
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
     </Page>
   );
@@ -132,12 +125,10 @@ export const ArcInsideCache = forwardRef<HTMLDivElement, { number: number }>((pr
         Let's modify our <code>Cache</code> to store values wrapped in <code>Arc</code>.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.85rem' }}>
-          {`struct Cache<K, V> {
+        <CodeBlock code={`struct Cache<K, V> {
     // HashMap now holds Arc-wrapped values
     data: RwLock<HashMap<K, Arc<V>>>,
-}`}
-        </pre>
+}`} style={{ fontSize: '0.85rem' }} />
       </div>
       <div className="content-block">
         Even though we store <code>Arc{"<"}V{">"}</code>, we can keep the <code>put</code> signature simple. We wrap the incoming value into an <code>Arc</code> internally.
@@ -157,15 +148,13 @@ export const ArcDeref = forwardRef<HTMLDivElement, { number: number }>((props, r
         This means you can call methods of the underlying type <code>V</code> directly on an <code>Arc{"<"}V{">"}</code>.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.85rem' }}>
-          {`let arc_str: Arc<String> = Arc::new("Hello".to_string());
+        <CodeBlock code={`let arc_str: Arc<String> = Arc::new("Hello".to_string());
 
 // You can use String methods directly:
 let len = arc_str.len(); 
 
 // Instead of:
-// let len = (*arc_str).len();`}
-        </pre>
+// let len = (*arc_str).len();`} style={{ fontSize: '0.85rem' }} />
       </div>
     </Page>
   );
@@ -176,8 +165,7 @@ export const FinalArcImplementation = forwardRef<HTMLDivElement, { number: numbe
     <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">The Arc Implementation</h2>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`use std::sync::{Arc, RwLock};
+        <CodeBlock code={`use std::sync::{Arc, RwLock};
 
 impl<K, V> Cache<K, V> where K: Hash + Eq {
     fn put(&self, key: K, value: V) {
@@ -193,9 +181,7 @@ impl<K, V> Cache<K, V> where K: Hash + Eq {
         // This is a call to Arc::clone()
         self.data.read().unwrap().get(key).cloned()
     }
-}
-`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         The <code>get</code> method now returns a clone of the <b>Arc Handle</b>. This lookup is now O(1) in both time and memory!
@@ -212,8 +198,7 @@ export const ArcTests = forwardRef<HTMLDivElement, { number: number }>((props, r
         Let's verify that we no longer need the <code>Clone</code> bound on <code>V</code>:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[test]
+        <CodeBlock code={`#[test]
 fn test_arc_cache() {
     let cache = Cache::new();
     cache.put("ID_1", "HeavyData".to_string());
@@ -223,10 +208,9 @@ fn test_arc_cache() {
     
     // val behaves like a String thanks to Deref
     assert_eq!(&*val, "HeavyData");
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
-      <div className="content-block" style={{ marginTop: '1.5rem', fontStyle: 'italic', color: '#2e7d32' }}>
+      <div className="content-block" style={{ marginTop: '1rem', fontStyle: 'italic', color: 'var(--success-color)' }}>
         We've successfully moved from "Safe but Slow" to "Safe and Fast".
       </div>
     </Page>

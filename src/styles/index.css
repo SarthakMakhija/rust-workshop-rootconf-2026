@@ -1,14 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
-  --bg-color: #1a1a1a;
-  --text-color: #e0e0e0;
-  --accent-color: #cd7f32;
-  /* Bronze/Rust accent */
-  --parchment-bg: #fdfaf0;
-  --parchment-text: #2c2c2c;
-  --parchment-accent: #8b4513;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  /* tech-lessons.in Theme Tokens */
+  --bg-color: #f8fafc;
+  --text-color: #1e293b;
+  --accent-color: #4f46e5;
+  --page-bg: #ffffff;
+  --text-muted: #64748b;
+  --parchment-accent: #4f46e5;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --code-bg: #1e293b;
+  --code-text: #e2e8f0;
+  /* High-Contrast Design Palette for Dark Themes */
+  --error-color: #ff8e8e;    /* Bright Coral - High visibility on dark navy */
+  --warning-color: #fcd34d;  /* Bright Amber - Excellent contrast */
+  --success-color: #34d399;  /* Bright Emerald */
+  --viz-handle-bg: #eff6ff; 
+  --viz-handle-border: #3b82f6; 
 }
 
 * {
@@ -29,19 +37,16 @@ body {
   align-items: center;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: 'Playfair Display', serif;
 }
 
-code,
-pre {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9rem;
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
 }
 
-/* Page Flip Container */
+/* Page Flip Container - MAINTAINING ORIGINAL DIMENSIONS */
 .book-container {
   width: 95vw;
   height: 92vh;
@@ -57,9 +62,9 @@ pre {
 }
 
 .page {
-  background-color: var(--parchment-bg);
-  color: var(--parchment-text);
-  padding: 3rem;
+  background-color: var(--page-bg);
+  color: var(--text-color);
+  padding: 2.5rem 3rem; 
   border: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
@@ -67,6 +72,7 @@ pre {
   flex-direction: column;
 }
 
+/* Page Identity & numbering */
 .page::before {
   content: '';
   position: absolute;
@@ -75,7 +81,7 @@ pre {
   right: 0;
   bottom: 0;
   background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-  opacity: 0.4;
+  opacity: 0.1;
   pointer-events: none;
 }
 
@@ -87,150 +93,171 @@ pre {
 
 .page-number {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 0.9rem;
-  color: var(--parchment-accent);
-  opacity: 0.6;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-/* Content Styles */
+/* Content Layout (Compressed) */
 .section-title {
-  color: var(--parchment-accent);
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--parchment-accent);
-  padding-bottom: 0.5rem;
-  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.4rem;
+  font-size: 1.8rem;
 }
 
 .content-block {
-  margin-bottom: 2rem;
+  margin-bottom: 0.75rem; 
   line-height: 1.6;
+  font-size: 1rem;
 }
 
 .keyword {
   font-weight: 700;
-  color: var(--parchment-accent);
+  color: var(--accent-color);
 }
 
 .code-snippet {
-  background: rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
-  border-radius: 6px;
-  border-left: 5px solid var(--parchment-accent);
-  margin: 1.5rem -1rem;
-  width: calc(100% + 2rem);
-}
-
-.audience-question {
-  background: #fffde7;
-  padding: 1.5rem;
-  border-radius: 6px;
-  border-left: 5px solid #fbc02d;
-  margin: 1.5rem -1rem;
-  width: calc(100% + 2rem);
-}
-
-/* UI Controls */
-.controls {
-  margin-top: 2rem;
-  display: flex;
-  gap: 1rem;
-  z-index: 10;
-}
-
-button {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: white;
-  padding: 0.75rem 1.5rem;
+  background: var(--code-bg);
+  padding: 1.25rem; 
   border-radius: 8px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  border-left: 5px solid var(--accent-color);
+  margin: 1rem -1rem; 
+  width: calc(100% + 2rem);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.code-snippet pre {
+  color: var(--code-text);
+  line-height: 1.4;
+}
+
+/* Specialized Error Styling for Code Blocks */
+.error-text {
+  color: var(--error-color) !important;
   font-weight: 600;
 }
 
-button:hover {
-  background: var(--glass-border);
-  transform: translateY(-2px);
-  border-color: var(--accent-color);
+.code-comment {
+  color: #86efac;
+  font-style: italic;
 }
 
-button:active {
-  transform: translateY(0);
+.error-text .code-comment {
+  color: inherit !important;
 }
 
-/* Cover Styling */
-.cover-page {
-  background: var(--parchment-bg);
+.audience-question {
+  background: #f8fafc;
+  padding: 1rem; 
+  border-radius: 6px;
+  border-left: 5px solid var(--accent-color);
+  margin: 0.75rem -1rem; 
+  width: calc(100% + 2rem);
+  font-style: italic;
+  font-size: 0.9rem; 
+}
+
+.explanation-box {
+  background: #f8fafc;
+  padding: 1rem; 
+  border-radius: 6px;
+  border-left: 5px solid var(--accent-color);
+  margin: 1rem -1rem; 
+  width: calc(100% + 2rem);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.explanation-box strong {
+  color: var(--accent-color);
+}
+
+/* String Type Comparison */
+.string-comparer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.type-info {
+  padding: 0.75rem;
+  background: rgba(15, 23, 42, 0.03);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 4px;
+}
+
+.type-header {
+  font-weight: 700;
+  color: var(--accent-color);
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.type-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.type-layout-viz {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
   align-items: center;
-  text-align: center;
-  border-left: 20px solid #5d2906;
-  /* Spine feel */
 }
 
-.cover-title {
-  font-size: 3.5rem;
-  color: var(--parchment-accent);
-  margin-bottom: 1rem;
+.layout-box {
+  background: var(--accent-color);
+  color: white;
+  padding: 0.1rem 0.4rem;
+  border-radius: 2px;
+  font-weight: 700;
 }
 
-.cover-subtitle {
-  font-size: 1.2rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: #666;
-}
-
-.cover-decoration {
-  width: 100px;
-  height: 2px;
-  background: var(--parchment-accent);
-  margin: 2rem 0;
-}
+.layout-box.heap { background: var(--accent-color); }
+.layout-box.ptr { background: var(--warning-color); color: #000; }
 
 /* Expressive Memory Diagram */
 .memory-viz {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.02);
+  gap: 3rem; 
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.03); 
   border-radius: 12px;
-  border: 1px solid rgba(139, 69, 19, 0.1);
+  border: 1px solid rgba(79, 70, 229, 0.1); 
 }
 
 .viz-row {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .viz-label {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
   width: 80px;
-  color: var(--parchment-accent);
+  color: var(--accent-color);
   text-transform: uppercase;
   font-size: 0.8rem;
 }
 
 .viz-handle {
   display: flex;
-  border: 2px solid #2563eb;
-  background: #eff6ff;
+  border: 2px solid var(--viz-handle-border);
+  background: var(--viz-handle-bg);
   border-radius: 4px;
 }
 
@@ -241,7 +268,7 @@ button:active {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid rgba(37, 99, 235, 0.3);
+  border-right: 1px solid rgba(59, 130, 246, 0.3);
   position: relative;
 }
 
@@ -263,7 +290,7 @@ button:active {
 }
 
 .ptr-value {
-  color: #d97706;
+  color: var(--warning-color);
   font-size: 0.7rem;
   font-style: italic;
 }
@@ -276,7 +303,7 @@ button:active {
 .buffer-cell {
   width: 40px;
   height: 40px;
-  background: #3b82f6;
+  background: var(--accent-color);
   color: white;
   display: flex;
   justify-content: center;
@@ -288,65 +315,63 @@ button:active {
 
 .viz-arrow {
   position: absolute;
-  top: 100px;
+  top: 80px;
   left: 145px;
-  color: #2563eb;
+  color: var(--accent-color);
   font-size: 2rem;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
-.viz-note {
-  font-size: 0.75rem;
-  font-style: italic;
-  color: #666;
-  margin-top: 1rem;
-  text-align: center;
+/* UI Controls */
+.controls {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 100;
+  position: relative;
 }
 
-/* String Type Comparison */
-.string-comparer {
+button {
+  background: #0f172a; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+button:hover {
+  background: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* Cover Styling */
+.cover-page {
+  background: #0f172a; 
+  color: #ffffff !important;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  margin-top: 1rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-left: 20px solid #000;
 }
 
-.type-info {
-  padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.4);
-  border-left: 4px solid var(--parchment-accent);
-  border-radius: 4px;
+.cover-title {
+  font-size: 3.5rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
 }
 
-.type-header {
-  font-weight: 700;
-  color: var(--parchment-accent);
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
+.cover-decoration {
+  width: 100px;
+  height: 4px;
+  background: var(--accent-color);
+  margin: 2rem 0;
 }
-
-.type-desc {
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: #333;
-}
-
-.type-layout-viz {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-}
-
-.layout-box {
-  background: #3b82f6;
-  color: white;
-  padding: 0.1rem 0.4rem;
-  border-radius: 2px;
-  font-weight: 700;
-}
-
-.layout-box.heap { background: #4f46e5; }
-.layout-box.ptr { background: #d97706; }

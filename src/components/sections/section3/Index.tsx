@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
+import CodeBlock from '../../CodeBlock';
 
 export const Section3Cover = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
@@ -10,7 +11,7 @@ export const Section3Cover = forwardRef<HTMLDivElement, { number: number }>((pro
         <h1 className="cover-title">STAGE 3</h1>
         <div className="cover-decoration" />
         <div className="cover-subtitle">Abstractions & Generics</div>
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           Moving from Strings to Universal Types.
         </div>
       </div>
@@ -46,11 +47,9 @@ export const IntroducingGenerics = forwardRef<HTMLDivElement, { number: number }
         Until now, our <code>Cache</code> was hardcoded. Let's make it flexible by using placeholders <span className="keyword">K</span> and <span className="keyword">V</span>.
       </div>
       <div className="code-snippet">
-        <pre>
-          {`struct Cache<K, V> {
+        <CodeBlock code={`struct Cache<K, V> {
     data: HashMap<K, V>,
-}`}
-        </pre>
+}`} />
       </div>
       <div className="content-block">
         In Rust, generic parameters are replaced with concrete types (like <code>i32</code> or <code>String</code>) at compile-time—this process is called **Monomorphization**. Zero cost, again!
@@ -67,14 +66,12 @@ export const TraitBounds = forwardRef<HTMLDivElement, { number: number }>((props
         But wait! A <code>HashMap</code> cannot use *just any* type as a key. If we try to compile the previous snippet, Rust yells at us:
       </div>
       <div className="code-snippet">
-        <pre style={{ color: '#c62828', fontSize: '0.8rem' }}>
-          {`error[E0277]: the trait bound 'K: Eq' is not satisfied
+        <CodeBlock code={`error[E0277]: the trait bound 'K: Eq' is not satisfied
 error[E0277]: the trait bound 'K: Hash' is not satisfied
   --> src/main.rs:5:11
    |
  5 |     data: HashMap<K, V>,
-   |           ^^^^^^^^^^^ the trait 'Hash' is not implemented for 'K'`}
-        </pre>
+   |           ^^^^^^^^^^^ the trait 'Hash' is not implemented for 'K'`} className="error-text" style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         We must explicitly tell the compiler: "K can be any type, **provided it implements** Hash and Eq."
@@ -91,8 +88,7 @@ export const GenericSyntax = forwardRef<HTMLDivElement, { number: number }>((pro
         Rust offers two ways to define these constraints:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`// 1. Inline Bounds (Concise for few constraints)
+        <CodeBlock code={`// 1. Inline Bounds (Concise for few constraints)
 struct Cache<K: Hash + Eq, V> {
     data: HashMap<K, V>,
 }
@@ -103,8 +99,7 @@ where
     K: Hash + Eq
 {
     data: HashMap<K, V>,
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         As your traits grow (e.g., <code>K: Hash + Eq + Send + Sync</code>), <code>where</code> clauses become essential for readability.
@@ -124,8 +119,7 @@ export const TheBorrowTrait = forwardRef<HTMLDivElement, { number: number }>((pr
         The answer lies in the <span className="keyword">Borrow</span> trait. It allows a type to provide an immutable reference to another type.
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`impl Cache<K, V> 
+        <CodeBlock code={`impl Cache<K, V> 
 where K: Hash + Eq
 {
     fn get<Q>(&self, key: &Q) -> Option<&V> 
@@ -134,8 +128,7 @@ where K: Hash + Eq
     {
         self.data.get(key)
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block" style={{ fontStyle: 'italic', borderLeft: '2px solid #ccc', paddingLeft: '1rem', fontSize: '0.9rem' }}>
         This is why <code>&str</code> works for <code>String</code> keys! It prevents unnecessary allocations by allowing the caller to pass a borrowed version of the key.
@@ -152,8 +145,7 @@ export const GenericCacheImpl = forwardRef<HTMLDivElement, { number: number }>((
         Our fully generic, allocation-optimized cache looks like this:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.75rem' }}>
-          {`use std::collections::HashMap;
+        <CodeBlock code={`use std::collections::HashMap;
 use std::borrow::Borrow;
 use std::hash::Hash;
 
@@ -175,13 +167,15 @@ where K: Hash + Eq
     {
         self.data.get(key)
     }
-}
-
-// 💡 What is ?Sized?
-// By default, generic types must have a known size at compile time. 
-// However, types like 'str' are unsized. '?Sized' tells Rust: 
-// "Q may or may not have a known size", allowing us to use &str.`}
-        </pre>
+}`} style={{ fontSize: '0.75rem' }} />
+      </div>
+      <div className="explanation-box">
+        <strong>What is ?Sized?</strong>
+        <p style={{ marginTop: '0.5rem' }}>
+          By default, generic types must have a known size at compile time. 
+          However, types like <code>str</code> are unsized. <code>?Sized</code> tells Rust: 
+          "Q may or may not have a known size", allowing us to use <code>&str</code>.
+        </p>
       </div>
     </Page>
   );
@@ -195,8 +189,7 @@ export const GenericTests = forwardRef<HTMLDivElement, { number: number }>((prop
         One implementation, many types. Let's verify:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[test]
+        <CodeBlock code={`#[test]
 fn test_complex_types() {
     // A cache for User IDs (i32) and Names (String)
     let mut cache = Cache::new();
@@ -204,17 +197,18 @@ fn test_complex_types() {
     
     // Lookup using a reference to i32
     assert!(cache.get(&1).is_some());
+}
 
-    // A cache for Strings
-    let mut string_cache = Cache::new();
-    string_cache.put("ID".to_string(), "100".to_string());
+#[test]
+fn test_string_lookup() {
+    let mut cache = Cache::new();
+    cache.put("ID".to_string(), "100".to_string());
 
     // Lookup using &str (Zero-Allocation!)
-    assert!(string_cache.get("ID").is_some());
-}`}
-        </pre>
+    assert!(cache.get("ID").is_some());
+}`} style={{ fontSize: '0.75rem' }} />
       </div>
-      <div className="content-block" style={{ marginTop: '1rem', fontStyle: 'italic', color: '#2e7d32' }}>
+      <div className="content-block" style={{ marginTop: '1rem', fontStyle: 'italic', color: 'var(--success-color)' }}>
         We have achieved the ultimate balance: <strong>Type Safety</strong> and <strong>Generality</strong>.
       </div>
     </Page>

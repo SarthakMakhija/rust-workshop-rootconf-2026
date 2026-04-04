@@ -1,5 +1,6 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
+import CodeBlock from '../../CodeBlock';
 
 export const WorkshopCover = forwardRef<HTMLDivElement, {}>((props, ref) => {
   return (
@@ -8,11 +9,11 @@ export const WorkshopCover = forwardRef<HTMLDivElement, {}>((props, ref) => {
         <div className="cover-subtitle">RootConf 2026</div>
         <div className="cover-decoration" />
         <h1 className="cover-title">RUST WORKSHOP</h1>
-        <div className="cover-subtitle" style={{ marginTop: '1rem', color: '#8b4513', letterSpacing: '2px', fontWeight: 'bold' }}>
+        <div className="cover-subtitle" style={{ marginTop: '1rem', color: 'var(--accent-color)', letterSpacing: '2px', fontWeight: 'bold' }}>
           THE MECHANICS OF <br /> MEMORY & SAFETY
         </div>
         <div className="cover-decoration" />
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           From Allocation to Zero-Cost Abstractions.
         </div>
       </div>
@@ -29,7 +30,7 @@ export const Stage1Cover = forwardRef<HTMLDivElement, { number: number }>((props
         <h1 className="cover-title">STAGE 1</h1>
         <div className="cover-decoration" />
         <div className="cover-subtitle">In-Memory Caching</div>
-        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+        <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           Building the foundation of memory safety.
         </div>
       </div>
@@ -84,13 +85,11 @@ export const BasicCache = forwardRef<HTMLDivElement, { number: number }>((props,
         For our first iteration, we will use <span className="keyword">String</span> for both keys and values.
       </div>
       <div className="code-snippet">
-        <pre>
-          {`use std::collections::HashMap;
+        <CodeBlock code={`use std::collections::HashMap;
 
 struct Cache {
     data: HashMap<String, String>,
-}`}
-        </pre>
+}`} />
       </div>
       <div className="content-block">
         This approach is straightforward but involves heap allocations for every operation.
@@ -107,8 +106,7 @@ export const Operations = forwardRef<HTMLDivElement, { number: number }>((props,
         To interact with our cache, we need two fundamental operations. Let's look at the signatures carefully:
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`impl Cache {
+        <CodeBlock code={`impl Cache {
     fn new() -> Self {
         Cache { data: HashMap::new() }
     }
@@ -120,8 +118,7 @@ export const Operations = forwardRef<HTMLDivElement, { number: number }>((props,
     fn get(&self, key: &String) -> Option<&String> {
         self.data.get(key)
     }
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>The 'get' Signature Deep Dive:</h3>
@@ -272,8 +269,7 @@ export const AllocationProblem = forwardRef<HTMLDivElement, { number: number }>(
         Now look back at our <span className="keyword">get(&String)</span> signature. Because it expects a reference to a full String object, the caller is forced to allocate!
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`#[test]
+        <CodeBlock code={`#[test]
 fn test_get_allocation() {
     let mut cache = Cache::new();
     cache.put("key".to_string(), "val".to_string());
@@ -284,8 +280,7 @@ fn test_get_allocation() {
     
     let key = String::from("key");
     let result = cache.get(&key);
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block">
         Every lookup involves an expensive visit to the OS for heap memory. In a fast cache, this is unacceptable.
@@ -340,8 +335,7 @@ export const OptimizedCache = forwardRef<HTMLDivElement, { number: number }>((pr
         By changing <span className="keyword">&String</span> to <span className="keyword">&str</span>, we allow the caller to pass string literals directly!
       </div>
       <div className="code-snippet">
-        <pre style={{ fontSize: '0.8rem' }}>
-          {`impl Cache {
+        <CodeBlock code={`impl Cache {
     // ... insert remains the same ...
 
     // OPTIMIZED:
@@ -361,8 +355,7 @@ fn test_zero_allocation_lookup() {
     // ZERO HEAP ALLOCATION!
     let result = cache.get(key);
     assert!(result.is_some());
-}`}
-        </pre>
+}`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="audience-question">
         <strong>💡 Audience Question:</strong>
