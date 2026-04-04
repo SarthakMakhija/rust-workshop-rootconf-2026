@@ -1,8 +1,10 @@
 import React, { useRef, useState, useCallback } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import { 
-  Cover, 
+  WorkshopCover,
+  Stage1Cover, 
   Intro, 
+  Stage1Roadmap,
   BasicCache, 
   Operations, 
   StructsReferences,
@@ -13,6 +15,16 @@ import {
   StringTypes,
   OptimizedCache
 } from './sections/section1/Index';
+import {
+  Section2Cover,
+  Section2Intro,
+  Section2Roadmap,
+  PrimitiveObsession,
+  NewTypePattern,
+  DerivingTraits,
+  TypeSafeCache,
+  SafetyVerification
+} from './sections/section2/Index';
 
 const Book: React.FC = () => {
   const bookRef = useRef<any>(null);
@@ -50,17 +62,32 @@ const Book: React.FC = () => {
         className="flip-book"
         ref={bookRef}
       >
-        <Cover />
-        <Intro number={1} />
-        <BasicCache number={2} />
-        <Operations number={3} />
-        <StructsReferences number={4} />
-        <MethodReceivers number={5} />
-        <StringLayout number={6} />
-        <OwnershipDetails number={7} />
-        <AllocationProblem number={8} />
-        <StringTypes number={9} />
-        <OptimizedCache number={10} />
+        {/* Overall Cover */}
+        <WorkshopCover />
+
+        {/* Section 1 */}
+        <Stage1Cover number={1} />
+        <Intro number={2} />
+        <Stage1Roadmap number={3} />
+        <BasicCache number={4} />
+        <Operations number={5} />
+        <StructsReferences number={6} />
+        <MethodReceivers number={7} />
+        <StringLayout number={8} />
+        <OwnershipDetails number={9} />
+        <AllocationProblem number={10} />
+        <StringTypes number={11} />
+        <OptimizedCache number={12} />
+
+        {/* Section 2 */}
+        <Section2Cover number={13} />
+        <Section2Intro number={14} />
+        <Section2Roadmap number={15} />
+        <PrimitiveObsession number={16} />
+        <NewTypePattern number={17} />
+        <DerivingTraits number={18} />
+        <TypeSafeCache number={19} />
+        <SafetyVerification number={20} />
       </HTMLFlipBook>
 
       <div className="controls">

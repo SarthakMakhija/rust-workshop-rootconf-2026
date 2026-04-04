@@ -1,19 +1,39 @@
 import React, { forwardRef } from 'react';
 import Page from '../../Page';
 
-export const Cover = forwardRef<HTMLDivElement, {}>((props, ref) => {
+export const WorkshopCover = forwardRef<HTMLDivElement, {}>((props, ref) => {
   return (
     <div className="page cover-page" data-density="hard" ref={ref}>
       <div className="page-content">
         <div className="cover-subtitle">RootConf 2026</div>
         <div className="cover-decoration" />
         <h1 className="cover-title">RUST WORKSHOP</h1>
+        <div className="cover-subtitle" style={{ marginTop: '1rem', color: '#8b4513', letterSpacing: '2px', fontWeight: 'bold' }}>
+          THE MECHANICS OF <br /> MEMORY & SAFETY
+        </div>
         <div className="cover-decoration" />
-        <div className="cover-subtitle">Session 01: High-Performance Caching</div>
+        <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
+          From Allocation to Zero-Cost Abstractions.
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export const Stage1Cover = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <div className="page cover-page" data-density="hard" ref={ref}>
+      <div className="page-content">
+        <div className="cover-subtitle">Workshop Track</div>
+        <div className="cover-decoration" />
+        <h1 className="cover-title">STAGE 1</h1>
+        <div className="cover-decoration" />
+        <div className="cover-subtitle">In-Memory Caching</div>
         <div style={{ marginTop: '2rem', fontStyle: 'italic', color: '#666' }}>
           Building the foundation of memory safety.
         </div>
       </div>
+      <div className="page-number">{props.number}</div>
     </div>
   );
 });
@@ -23,20 +43,30 @@ export const Intro = forwardRef<HTMLDivElement, { number: number }>((props, ref)
     <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">Getting Started</h2>
       <div className="content-block">
-        Welcome to the first session of the Rust Systems Workshop. Today, we delve into the core of Rust's efficiency and safety by building a high-performance cache.
+        Welcome to the RootConf 2026 Rust Systems Workshop. Today, we delve into the core of Rust's efficiency and safety by building an in-memory cache.
       </div>
       <div className="content-block">
-        <h3 style={{ marginBottom: '0.5rem' }}>Stage 1 Roadmap:</h3>
-        <ul style={{ paddingLeft: '1.5rem', lineHeight: '1.8' }}>
-          <li>Basic Cache implementation</li>
-          <li>Get & Put Operations</li>
-          <li>Structs & References</li>
-          <li>Borrowing: &self vs &mut self</li>
-          <li>String: Memory Layout</li>
-          <li>Ownership and Structs</li>
-          <li>The Allocation Problem</li>
-          <li>String vs &str vs str</li>
-          <li>Optimized Zero-Allocation Cache</li>
+        Over the next few modules, we'll journey from a simple implementation to a highly optimized, zero-allocation cache that leverages Rust's unique memory model.
+      </div>
+    </Page>
+  );
+});
+
+export const Stage1Roadmap = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-left">
+      <h2 className="section-title">Stage 1 Roadmap</h2>
+      <div className="content-block">
+        <ul style={{ paddingLeft: '1.5rem', lineHeight: '2.2' }}>
+          <li><strong>Basic Cache implementation</strong>: Our starting point.</li>
+          <li><strong>Get & Put Operations</strong>: Defining the API.</li>
+          <li><strong>Structs & References</strong>: Understanding physical layout.</li>
+          <li><strong>Borrowing</strong>: <code>&self</code> vs <code>&mut self</code>.</li>
+          <li><strong>String</strong>: Direct look at memory architecture.</li>
+          <li><strong>Ownership</strong>: Automatic cleanup and constraints.</li>
+          <li><strong>The Allocation Problem</strong>: Finding our first bottleneck.</li>
+          <li><strong>String vs &str vs str</strong>: Mastering Rust text.</li>
+          <li><strong>Optimized Cache</strong>: Reaching Zero-Allocation.</li>
         </ul>
       </div>
     </Page>
@@ -45,7 +75,7 @@ export const Intro = forwardRef<HTMLDivElement, { number: number }>((props, ref)
 
 export const BasicCache = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-left">
+    <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">1. Basic Cache</h2>
       <div className="content-block">
         Our journey begins with a simple <span className="keyword">Key-Value</span> store. In Rust, we need to be explicit about ownership.
@@ -71,7 +101,7 @@ struct Cache {
 
 export const Operations = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-right">
+    <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">2. Get & Put Operations</h2>
       <div className="content-block">
         To interact with our cache, we need two fundamental operations. Let's look at the signatures carefully:
@@ -111,7 +141,7 @@ export const Operations = forwardRef<HTMLDivElement, { number: number }>((props,
 
 export const StructsReferences = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-left">
+    <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">3. Structs & References</h2>
       <div className="content-block">
         Rust provides three ways to define structure:
@@ -144,7 +174,7 @@ let white = Color(255, 255, 255);`}
 
 export const MethodReceivers = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-right">
+    <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">4. Method Receivers</h2>
       <div className="content-block">
         In Rust, methods use special <span className="keyword">self</span> parameters to define access:
@@ -166,7 +196,7 @@ export const MethodReceivers = forwardRef<HTMLDivElement, { number: number }>((p
 
 export const StringLayout = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-left">
+    <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">5. String Memory Layout</h2>
       <div className="content-block">
         Before we optimize, we must understand how a <span className="keyword">String</span> actually lives in memory. It is a "Handle" pointing to a "Buffer".
@@ -213,7 +243,7 @@ export const StringLayout = forwardRef<HTMLDivElement, { number: number }>((prop
 
 export const OwnershipDetails = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-right">
+    <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">6. Ownership & Structs</h2>
       <div className="content-block">
         When a struct contains a <span className="keyword">String</span>, we say the struct <span className="keyword">owns</span> that string. This has deep implications:
@@ -236,7 +266,7 @@ export const OwnershipDetails = forwardRef<HTMLDivElement, { number: number }>((
 
 export const AllocationProblem = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-left">
+    <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">7. The Allocation Problem</h2>
       <div className="content-block">
         Now look back at our <span className="keyword">get(&String)</span> signature. Because it expects a reference to a full String object, the caller is forced to allocate!
@@ -266,7 +296,7 @@ fn test_get_allocation() {
 
 export const StringTypes = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-right">
+    <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">8. String, str, and &str</h2>
       <div className="content-block" style={{ fontSize: '0.9rem' }}>
         To solve the allocation problem, we must understand the three faces of text in Rust:
@@ -304,7 +334,7 @@ export const StringTypes = forwardRef<HTMLDivElement, { number: number }>((props
 
 export const OptimizedCache = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
   return (
-    <Page number={props.number} ref={ref} className="page-left">
+    <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">9. Zero-Allocation Get</h2>
       <div className="content-block">
         By changing <span className="keyword">&String</span> to <span className="keyword">&str</span>, we allow the caller to pass string literals directly!
