@@ -256,9 +256,6 @@ export const InteriorMutabilityPath = forwardRef<HTMLDivElement, { number: numbe
         <h3 style={{ fontSize: '1rem', color: '#10b981' }}>The Cache Entry Pattern</h3>
         We can bypass compile-time mutability rules by transitioning to <strong>Runtime Borrow Checking</strong>. We will design a dedicated <code>Entry</code> struct leveraging <code>RefCell</code>.
       </div>
-      <div className="content-block" style={{ textAlign: 'center', marginTop: '1rem', fontWeight: 'bold' }}>
-        Welcome to Interior Mutability.
-      </div>
     </Page>
   );
 });
