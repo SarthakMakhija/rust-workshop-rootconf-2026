@@ -53,6 +53,11 @@ import '../styles/index.css';
 		<main>
 			<Book client:load />
 		</main>
+		<footer class="workshop-footer">
+			<div class="footer-inner">
+				<p>tech-lessons.in © 2020 - 2026 / Crafted with Antigravity</p>
+			</div>
+		</footer>
 	</body>
 </html>
 
@@ -137,5 +142,32 @@ import '../styles/index.css';
 	.back-link .arrow {
 		font-size: 1.1rem;
 		line-height: 1;
+	}
+
+	.workshop-footer {
+		padding: 1.25rem 2.5rem;
+		width: 100%;
+		background: rgba(2, 6, 23, 0.98);
+		border-top: 1px solid rgba(255, 255, 255, 0.05);
+		color: rgba(255, 255, 255, 0.4);
+		font-family: 'Outfit', sans-serif;
+		font-size: 0.7rem;
+		z-index: 10;
+	}
+
+	.footer-inner {
+		max-width: 1600px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.footer-inner p {
+		margin: 0;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		opacity: 0.5;
+		font-weight: 400;
 	}
 </style>

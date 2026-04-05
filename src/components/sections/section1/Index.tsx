@@ -16,6 +16,14 @@ export const WorkshopCover = forwardRef<HTMLDivElement, {}>((props, ref) => {
         <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
           From Allocation to Zero-Cost Abstractions.
         </div>
+        <div style={{ position: 'absolute', bottom: '0rem', right: '1rem', textAlign: 'right' }}>
+          <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '3px', opacity: 0.5, marginBottom: '0.3rem' }}>
+            by
+          </div>
+          <div style={{ fontSize: '1.1rem', letterSpacing: '2px', fontWeight: '500', textTransform: 'uppercase', opacity: 0.9 }}>
+            Sarthak Makhija
+          </div>
+        </div>
       </div>
     </div>
   );
