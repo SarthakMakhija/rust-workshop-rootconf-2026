@@ -85,7 +85,17 @@ import {
   SendAndSync,
   FinalVerification
 } from './sections/section9/Index';
-import { Section10Cover } from './sections/section10/Index';
+import {
+  Section10Cover,
+  Stage10Roadmap,
+  LockContentionIntro,
+  ShardingDesign,
+  TheShardedStruct,
+  HashingAndIndexing,
+  ShardedImplementation,
+  ShardedAccess,
+  ShardedVerification
+} from './sections/section10/Index';
 import { Section11Cover } from './sections/section11/Index';
 import { Section12Cover } from './sections/section12/Index';
 import {
@@ -239,20 +249,30 @@ const Book: React.FC = () => {
         <SendAndSync number={69} />
         <FinalVerification number={70} />
 
-        {/* Placeholders for 10, 11, 12 */}
+        {/* Stage 10 */}
         <Section10Cover number={71} />
-        <Section11Cover number={72} />
-        <Section12Cover number={73} />
+        <Stage10Roadmap number={72} />
+        <LockContentionIntro number={73} />
+        <ShardingDesign number={74} />
+        <TheShardedStruct number={75} />
+        <HashingAndIndexing number={76} />
+        <ShardedImplementation number={77} />
+        <ShardedAccess number={78} />
+        <ShardedVerification number={79} />
+
+        {/* Placeholders for 11, 12 */}
+        <Section11Cover number={80} />
+        <Section12Cover number={81} />
 
         {/* Stage 13 */}
-        <Section13Cover number={74} />
-        <Stage13Roadmap number={75} />
-        <ShutdownIntro number={76} />
-        <NaiveApproach number={77} />
-        <OwnershipTermination number={78} />
-        <TypeStateConcept number={79} />
-        <CompilerAsGuard number={80} />
-        <Section13Summary number={81} />
+        <Section13Cover number={82} />
+        <Stage13Roadmap number={83} />
+        <ShutdownIntro number={84} />
+        <NaiveApproach number={85} />
+        <OwnershipTermination number={86} />
+        <TypeStateConcept number={87} />
+        <CompilerAsGuard number={88} />
+        <Section13Summary number={89} />
       </HTMLFlipBook>
 
       <div className="controls">
