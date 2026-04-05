@@ -194,7 +194,7 @@ export const WorkshopConclusion = forwardRef<HTMLDivElement, { number: number }>
         Good luck out there, Rustaceans. 🦀
       </div>
       <div style={{ marginTop: '2.5rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '1.5rem', opacity: 0.7, fontSize: '0.8rem' }}>
-        <em>An interactive production by Sarthak Makhija</em><br />
+        <em>By Sarthak Makhija</em><br />
         <span style={{ fontSize: '0.7rem' }}>Special thanks to <strong>Antigravity</strong> for technical partnership.</span>
       </div>
     </Page>
