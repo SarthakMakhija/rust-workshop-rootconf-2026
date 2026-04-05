@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tech-lessons.in/rust-workshop-2026/sitemap-index.xml
