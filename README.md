@@ -2,7 +2,7 @@
 
 ![Rust Workshop 2026 Banner](./public/social-preview.png)
 
-Welcome to the **Rust Systems Workshop**, a 14-stage deep dive into the engineering of memory-safe, high-performance systems. Originally presented at **RootConf 2026**, this repository serves as an interactive, presentation-style resource for mastering Rust's unique memory model.
+Welcome to the **Rust Systems Workshop**, a 14-stage deep dive into the engineering of memory-safe, high-performance systems. Originally presented at **Rust India Conference 2026**, this repository serves as an interactive, presentation-style resource for mastering Rust's unique memory model.
 
 ### 🔗 [Live Presentation](https://tech-lessons.in/rust-workshop-2026/)
 
@@ -72,4 +72,4 @@ git push origin v1.1.0
 
 ---
 
-*Presented by [Sarthak Makhija](https://tech-lessons.in/), RootConf 2026*
+*Presented by [Sarthak Makhija](https://tech-lessons.in/), Rust India Conference 2026*

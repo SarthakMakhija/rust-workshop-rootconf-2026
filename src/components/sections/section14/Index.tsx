@@ -6,7 +6,7 @@ export const Section14Cover = forwardRef<HTMLDivElement, { number: number }>((pr
   return (
     <div className="page cover-page" data-density="hard" ref={ref}>
       <div className="page-content">
-        <div className="cover-subtitle">RootConf 2026</div>
+        <div className="cover-subtitle">Rust India Conference 2026</div>
         <div className="cover-decoration" />
         <h1 className="cover-title">STAGE 14</h1>
         <div className="cover-decoration" />
@@ -97,7 +97,7 @@ impl CacheBuilder {
           Our <code>build</code> method returns an <strong><code>Arc</code></strong> (Atomic Reference Counted pointer) because the cache must be safely shared across multiple threads.
         </p>
         <p style={{ marginTop: '0.5rem', fontSize: '0.7rem' }}>
-          The trait bounds <strong><code>Send + Sync + 'static</code></strong> ensure that the keys and values can safely transition between and be accessed by multiple threads simultaneously.
+          The trait bounds <strong><code>Send + Sync + 'static'</code></strong> ensure that the keys and values can safely transition between and be accessed by multiple threads simultaneously.
         </p>
       </div>
     </Page>
@@ -193,9 +193,10 @@ export const WorkshopConclusion = forwardRef<HTMLDivElement, { number: number }>
       <div className="content-block" style={{ textAlign: 'center', marginTop: '2rem', fontStyle: 'italic' }}>
         Good luck out there, Rustaceans. 🦀
       </div>
-      <div style={{ marginTop: '2.5rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '1.5rem', opacity: 0.7, fontSize: '0.8rem' }}>
-        <em>By Sarthak Makhija</em><br />
-        <span style={{ fontSize: '0.7rem' }}>Special thanks to <strong>Antigravity</strong> for technical partnership.</span>
+      <div style={{ marginTop: '2.5rem', textAlign: 'center', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '1.5rem', opacity: 0.7, fontSize: '0.8rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <span><em>By Sarthak Makhija</em></span>
+        <img src="/rust-workshop-2026/caizin-logo.png" alt="Caizin" style={{ height: '35px', marginTop: '10px', marginBottom: '10px' }} />
+        <span style={{ fontSize: '0.7rem', display: 'block' }}>Special thanks to <strong>Antigravity</strong> for technical partnership.</span>
       </div>
     </Page>
   );

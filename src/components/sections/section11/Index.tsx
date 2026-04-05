@@ -6,7 +6,7 @@ export const Section11Cover = forwardRef<HTMLDivElement, { number: number }>((pr
   return (
     <div className="page cover-page" data-density="hard" ref={ref}>
       <div className="page-content">
-        <div className="cover-subtitle">RootConf 2026</div>
+        <div className="cover-subtitle">Rust India Conference 2026</div>
         <div className="cover-decoration" />
         <h1 className="cover-title">STAGE 11</h1>
         <div className="cover-decoration" />
