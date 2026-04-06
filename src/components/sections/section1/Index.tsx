@@ -10,7 +10,7 @@ export const WorkshopCover = forwardRef<HTMLDivElement, {}>((props, ref) => {
         <div className="cover-decoration" />
         <h1 className="cover-title">RUST WORKSHOP</h1>
         <div className="cover-subtitle" style={{ marginTop: '1rem', color: 'var(--accent-color)', letterSpacing: '2px', fontWeight: 'bold' }}>
-          THE MECHANICS OF <br /> MEMORY & SAFETY
+          BUILD A CONCURRENT <br /> CACHE IN RUST
         </div>
         <div className="cover-decoration" />
         <div className="cover-subtitle" style={{ marginTop: '2rem', fontStyle: 'italic' }}>
@@ -52,7 +52,7 @@ export const Intro = forwardRef<HTMLDivElement, { number: number }>((props, ref)
     <Page number={props.number} ref={ref} className="page-right">
       <h2 className="section-title">Getting Started</h2>
       <div className="content-block">
-        Welcome to the Rust India Conference 2026, Rust Systems Workshop. Today, we delve into the core of Rust's efficiency and safety by building an in-memory cache.
+        Welcome to the Rust India Conference 2026, Build a concurrent cache in Rust workshop. Today, we delve into the core of Rust's efficiency and safety by building an in-memory cache.
       </div>
       <div className="content-block">
         Over the next few modules, we'll journey from a simple implementation to a highly optimized cache that leverages Rust's unique memory model.
