@@ -134,7 +134,7 @@ export const TypeSafeCache = forwardRef<HTMLDivElement, { number: number }>((pro
 }
 
 impl Cache {
-    fn put(&mut self, key: CacheKey, value: V) {
+    fn put(&mut self, key: CacheKey, value: CacheValue) {
         self.data.insert(key, value);
     }
 }`} style={{ fontSize: '0.8rem' }} />
@@ -173,4 +173,94 @@ fn should_fail_to_swap() {
   );
 });
 
+export const VerbosityProblem = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-right">
+      <h2 className="section-title">The Verbosity Tax</h2>
+      <div className="content-block">
+        While the NewType pattern gives us safety, it comes with a cost in <strong>readability</strong> and <strong>verbosity</strong>:
+      </div>
+      <div className="code-snippet">
+        <CodeBlock code={`// 😱 This is hard to read and write!
+cache.put(
+    CacheKey(String::from("rustconf")), 
+    CacheValue(String::from("2026"))
+);`} style={{ fontSize: '0.8rem', marginTop: '1rem' }} />
+      </div>
+      <div className="content-block" style={{ marginTop: '1.5rem' }}>
+        We have achieved type safety, but we have lost the simplicity of using raw strings. 
+      </div>
+      <div className="content-block" style={{ fontStyle: 'italic', color: 'var(--accent-color)' }}>
+        Can we have both? Let's explore <strong>Conversion Traits</strong>.
+      </div>
+    </Page>
+  );
+});
+
+export const ErgonomicConversions = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-left">
+      <h2 className="section-title">Ergonomic Conversions</h2>
+      <div className="content-block" style={{ fontSize: '0.85rem' }}>
+        Manually wrapping strings is verbose. We can use the <span className="keyword">From</span> trait to automate it:
+      </div>
+      <div className="code-snippet">
+        <CodeBlock code={`impl From<&str> for CacheKey {
+    fn from(value: &str) -> Self {
+        CacheKey(value.to_string())
+    }
+}
+
+impl From<&str> for CacheValue {
+    fn from(value: &str) -> Self {
+        CacheValue(value.to_string())
+    }
+}`} style={{ fontSize: '0.75rem' }} />
+      </div>
+      <div className="explanation-box" style={{ fontSize: '0.8rem' }}>
+        <p><strong>to_string()</strong>: This method converts a string slice (borrowed data) into a full <code>String</code> (owned data).</p>
+        <p><strong>Allocation</strong>: <span className="error-text">Yes</span>, this performs a heap allocation. We are copying the data from the binary into the heap so our struct can own it.</p>
+      </div>
+    </Page>
+  );
+});
+
+export const ErgonomicAssertions = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-right">
+      <h2 className="section-title">Beautiful Assertions</h2>
+      <div className="code-snippet">
+        <CodeBlock code={`impl PartialEq<str> for CacheValue {
+    fn eq(&self, other: &str) -> bool {
+        self.0 == other
+    }
+}
+
+#[test]
+fn get_existing_key_ergonomic() {
+    let mut cache = Cache::new();
+
+    // 💡 Ergonomic! No more manual wrapping or .to_string() calls.
+    // 🤔 Question: Why does .into() work for both CacheKey and CacheValue here?
+    cache.put("rustconf".into(), "2026".into());
+
+    // 🤔 Question: Is using .unwrap() here safe? Why might we accept it in
+    //   a test but avoid it in production code?
+    let value = cache.get(&"rustconf".into()).unwrap();
+
+    // 💡 Clean assertion! 
+    // 🤔 Question: How can we compare a \`CacheValue\` (a struct) with a literal \`"2026"\` (&str)?
+    assert_eq!(value, "2026");
+}`} style={{ fontSize: '0.72rem' }} />
+      </div>
+      <div className="explanation-box" style={{ fontSize: '0.75rem' }}>
+        <ul style={{ paddingLeft: '1rem' }}>
+          <li><strong>.into()</strong>: Works because the compiler knows the function signature. It "sees" that <code>put</code> wants a <code>CacheKey</code> and automatically calls our <code>From</code> implementation.</li>
+          <li><strong>.unwrap()</strong>: Safe in tests because we <em>expect</em> the value to be there. If it's not, the test fails immediately—which is what we want! (In production, use <code>match</code> or <code>if let</code>).</li>
+          <li><strong>assert_eq!</strong>: Works because our <code>PartialEq&lt;str&gt;</code> allows comparing our struct directly with a literal <code>"2026"</code>.</li>
+        </ul>
+      </div>
+    </Page>
+  );
+});
 
