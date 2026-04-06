@@ -235,7 +235,11 @@ export const TheBrokenGet = forwardRef<HTMLDivElement, { number: number }>((prop
         Our previous <code>get</code> returned <code>Option{"<"}&V{">"}</code>. But with a Lock, the compiler sees a fatal flaw:
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`fn get(&self, key: &K) -> Option<&V> {
+        <CodeBlock code={`fn get<Q>(&self, key: &Q) -> Option<&V>
+where
+    K: Borrow<Q>,
+    Q: Hash + Eq + ?Sized,
+{
     // 1. Acquire the Read Lock
     let guard = self.data.read().unwrap();
     
@@ -270,7 +274,11 @@ export const OwnershipShift = forwardRef<HTMLDivElement, { number: number }>((pr
         <CodeBlock code={`impl<K, V> Cache<K, V> 
 where K: Hash + Eq, V: Clone 
 {
-    fn get(&self, key: &K) -> Option<V> {
+    fn get<Q>(&self, key: &Q) -> Option<V>
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         let guard = self.data.read().unwrap();
         // Clone the value out BEFORE the guard is dropped
         guard.get(key).cloned() 
@@ -292,7 +300,11 @@ export const SafeCacheImpl = forwardRef<HTMLDivElement, { number: number }>((pro
         Breaking the implementation into explicit steps shows exactly how the data moves:
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`fn get(&self, key: &K) -> Option<V> {
+        <CodeBlock code={`fn get<Q>(&self, key: &Q) -> Option<V>
+where
+    K: Borrow<Q>,
+    Q: Hash + Eq + ?Sized,
+{
     // 1. Acquire the guard
     let guard = self.data.read().unwrap();
     

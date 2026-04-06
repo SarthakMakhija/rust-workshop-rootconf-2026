@@ -49,7 +49,11 @@ export const TheCloningTax = forwardRef<HTMLDivElement, { number: number }>((pro
       </div>
       <div className="code-snippet">
         <CodeBlock code={`// Stage 6 Implementation
-fn get(&self, key: &K) -> Option<V> {
+fn get<Q>(&self, key: &Q) -> Option<V>
+where
+    K: Borrow<Q>,
+    Q: Hash + Eq + ?Sized,
+{
     self.data.read().unwrap().get(key).cloned() // <- COPIES ALL DATA
 }`} style={{ fontSize: '0.8rem' }} />
       </div>
@@ -176,7 +180,11 @@ impl<K, V> Cache<K, V> where K: Hash + Eq {
         self.data.write().unwrap().insert(key, shared_val);
     }
 
-    fn get(&self, key: &K) -> Option<Arc<V>> {
+    fn get<Q>(&self, key: &Q) -> Option<Arc<V>>
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         // 3. Clone the Arc Handle (not the data!)
         // This is a call to Arc::clone()
         self.data.read().unwrap().get(key).cloned()

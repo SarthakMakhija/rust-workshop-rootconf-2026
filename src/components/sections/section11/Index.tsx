@@ -190,7 +190,11 @@ export const CacheRefactorCode = forwardRef<HTMLDivElement, { number: number }>(
         self.shards[index].put(key, value, ttl);
     }
 
-    fn get<Q>(&self, key: &Q) -> Option<Ref<'_, K, V>> {
+    fn get<Q>(&self, key: &Q) -> Option<Ref<'_, K, V>>
+    where
+        K: Borrow<Q>,
+        Q: Hash + Eq + ?Sized,
+    {
         let index = self.shard_index(key);
         self.shards[index].get(key)
     }
