@@ -475,6 +475,12 @@ impl ConcurrentStatsCounter {
         <h3 style={{ fontSize: '0.9rem', color: 'var(--accent-color)' }}>Zero-Cost Layout</h3>
         <code>#[repr(transparent)]</code> ensures <code>Counter</code> has the exact same layout as <code>CachePadded</code>. We use <b>AcqRel</b> at (1) and <b>Acquire</b> at (2) to form a <b>Happens-Before Relationship</b>, ensuring the thread reading the <code>hit_ratio</code> sees consistent data.
       </div>
+      <div className="explanation-box" style={{ background: '#fffbeb', borderLeft: '4px solid #f59e0b', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '0.85rem', color: '#92400e' }}>Integration Status</h3>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.75rem', fontStyle: 'italic' }}>
+          <strong>Note:</strong> While we've built a high-performance stats counter here, we haven't integrated it into the main <code>Cache</code> struct yet. Stage 14 will cover integrating the stats in cache.
+        </p>
+      </div>
     </Page>
   );
 });
