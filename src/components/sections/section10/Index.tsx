@@ -116,7 +116,10 @@ where K: Eq + Hash
 }`} />
       </div>
       <div className="code-snippet" style={{ marginTop: '1rem' }}>
-        <CodeBlock code={`impl<K, V> Cache<K, V> {
+        <CodeBlock code={`impl<K, V> Cache<K, V>
+where
+    K: Hash + Eq,
+{
     fn new(shards: usize) -> Arc<Self> {
         let shards_vec = (0..shards)
             .map(|_| RwLock::new(HashMap::new()))
