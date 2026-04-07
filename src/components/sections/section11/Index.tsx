@@ -70,12 +70,18 @@ export const TheShardAbstraction = forwardRef<HTMLDivElement, { number: number }
     expires_at: Instant, // 🔑 The Metadata
 }
 
-struct Shard<K, V> {
+struct Shard<K, V>
+where
+    K: Hash + Eq + Clone,
+{
     data: RwLock<HashMap<K, Entry<V>>>,
     ttl_list: RwLock<Vec<(K, Instant)>>,
 }
 
-impl<K, V> Shard<K, V> {
+impl<K, V> Shard<K, V>
+where
+    K: Hash + Eq + Clone,
+{
     fn new() -> Self {
         Self {
             data: RwLock::new(HashMap::new()),
@@ -156,7 +162,10 @@ export const ZeroCopyRefTTL = forwardRef<HTMLDivElement, { number: number }>((pr
         Our <code>Ref</code> wrapper must now account for the <code>Entry&lt;V&gt;</code> indirection while maintaining safety.
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`struct Ref<'a, K, V> {
+        <CodeBlock code={`struct Ref<'a, K, V>
+where
+    K: Hash + Eq,
+{
     guard: RwLockReadGuard<'a, HashMap<K, Entry<V>>>,
     value: *const V,
 }
