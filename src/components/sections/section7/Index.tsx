@@ -215,10 +215,10 @@ fn test_arc_cache() {
     cache.put("ID_1", "HeavyData".to_string());
     
     // Returns Option<Arc<String>>
-    let val = cache.get(&"ID_1").unwrap();
+    let val = cache.get("ID_1").unwrap();
     
     // val behaves like a String thanks to Deref
-    assert_eq!(&*val, "HeavyData");
+    assert_eq!(*val, "HeavyData");
 }`} style={{ fontSize: '0.8rem' }} />
       </div>
       <div className="content-block" style={{ marginTop: '1rem', fontStyle: 'italic', color: 'var(--success-color)' }}>

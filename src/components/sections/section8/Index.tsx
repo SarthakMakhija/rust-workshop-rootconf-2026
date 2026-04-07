@@ -191,7 +191,10 @@ export const UnsafeDeref = forwardRef<HTMLDivElement, { number: number }>((props
         When we implement <span className="keyword">Deref</span>, we use an <span className="keyword">unsafe</span> block. Let's be precise about what this means.
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`impl<'a, K, V> Deref for Ref<'a, K, V> {
+        <CodeBlock code={`impl<'a, K, V> Deref for Ref<'a, K, V>
+where
+    K: Hash + Eq,
+{
     type Target = V;
 
     fn deref(&self) -> &Self::Target {

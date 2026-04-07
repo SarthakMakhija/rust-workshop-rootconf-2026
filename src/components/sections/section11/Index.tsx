@@ -161,7 +161,10 @@ export const ZeroCopyRefTTL = forwardRef<HTMLDivElement, { number: number }>((pr
     value: *const V,
 }
 
-impl<'a, K, V> Deref for Ref<'a, K, V> {
+impl<'a, K, V> Deref for Ref<'a, K, V>
+where
+    K: Hash + Eq,
+{
     type Target = V;
 
     fn deref(&self) -> &Self::Target {
