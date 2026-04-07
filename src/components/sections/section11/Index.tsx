@@ -117,7 +117,7 @@ export const ShardPutCode = forwardRef<HTMLDivElement, { number: number }>((prop
 }`} style={{ fontSize: '0.72rem' }} />
       </div>
       <div className="explanation-box" style={{ marginTop: '1rem', fontSize: '0.75rem' }}>
-        <strong>Why <code>key.clone()</code>?</strong><br/>
+        <strong>Why <code>key.clone()</code>?</strong><br />
         The key is stored in two places: the <code>HashMap</code> (for access) and the <code>Vec</code> (for background cleanup). Since we hold two separate locks, we must clone the key to ensure consistent ownership in both.
       </div>
     </Page>
@@ -239,8 +239,8 @@ export const ShardCleanupCode = forwardRef<HTMLDivElement, { number: number }>((
     <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">The Cleanup Phase</h2>
       <div className="content-block" style={{ fontSize: '0.8rem' }}>
-        We must clean up expired keys in <strong>two distinct phases</strong> to minimize lock contention and prevent deadlocks. 
-        <br/><br/>
+        We must clean up expired keys in <strong>two distinct phases</strong> to minimize lock contention and prevent deadlocks.
+        <br /><br />
         First, we require a <strong><code>write()</code> lock</strong> on the <code>ttl_list</code> because <code>retain()</code> modifies the vector in-place by removing the expired elements.
       </div>
       <div className="code-snippet">
@@ -282,11 +282,11 @@ export const BackgroundCleanerAssignment = forwardRef<HTMLDivElement, { number: 
         <ol style={{ paddingLeft: '1.2rem', lineHeight: '1.8' }}>
           <li>Spawn a background thread when the cache is created.</li>
           <li>The thread should periodically:
-             <ul style={{ listStyleType: 'circle', paddingLeft: '1.2rem' }}>
-               <li>Sleep for a fixed duration (e.g., 1 second).</li>
-               <li>Select <strong>ONE</strong> shard to clean.</li>
-               <li>Call <code>cleanup()</code> on that shard.</li>
-             </ul>
+            <ul style={{ listStyleType: 'circle', paddingLeft: '1.2rem' }}>
+              <li>Sleep for a fixed duration (e.g., 1 second).</li>
+              <li>Select <strong>ONE</strong> shard to clean.</li>
+              <li>Call <code>cleanup()</code> on that shard.</li>
+            </ul>
           </li>
           <li><strong>Do NOT</strong> clean all shards at once. Spread the cleanup work across shards over time.</li>
           <li>Use a simple strategy to pick the shard (e.g., round-robin using a counter).</li>
@@ -304,7 +304,8 @@ export const BackgroundCleanerImpl = forwardRef<HTMLDivElement, { number: number
         Here is a basic implementation of the background cleaner using standard library threads:
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`fn spawn_cleaner(shards: Arc<Vec<Shard<K, V>>>) -> JoinHandle<()> {
+        <CodeBlock code={`fn spawn_cleaner<K, V>(shards: Arc<Vec<Shard<K, V>>>) -> JoinHandle<()>
+{
     let handle = thread::spawn(move || {
         let mut index = 0;
         loop {
@@ -318,6 +319,9 @@ export const BackgroundCleanerImpl = forwardRef<HTMLDivElement, { number: number
 
     handle
 }`} style={{ fontSize: '0.75rem' }} />
+      </div>
+      <div className="content-block" style={{ marginTop: '1.5rem', fontStyle: 'italic', fontSize: '0.85rem' }}>
+        <strong>Socratic Challenge:</strong> We just introduced <code>spawn_cleaner</code>. Will the introduction of background cleaner change the constaint of <code>K</code> and <code>V</code> on <code>Cache</code>? Why?
       </div>
     </Page>
   );
