@@ -63,21 +63,21 @@ export const ShardingDesign = forwardRef<HTMLDivElement, { number: number }>((pr
       <div className="content-block">
         Instead of one big lock, we break our data into <strong>N independent shards</strong>, each with its own lock.
       </div>
-      
+
       {/* Sharding Visualization */}
-      <div className="explanation-box" style={{ 
-        marginTop: '1.5rem', 
-        padding: '1.5rem', 
-        background: 'var(--bg-card)', 
+      <div className="explanation-box" style={{
+        marginTop: '1.5rem',
+        padding: '1.5rem',
+        background: 'var(--bg-card)',
         border: '1px solid var(--border-color)',
         borderRadius: '12px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
           {[1, 2, 3, 4].map(i => (
-            <div key={i} style={{ 
-              flex: 1, 
-              padding: '10px', 
-              border: '2px solid var(--accent-color)', 
+            <div key={i} style={{
+              flex: 1,
+              padding: '10px',
+              border: '2px solid var(--accent-color)',
               borderRadius: '8px',
               textAlign: 'center',
               background: 'var(--accent-light)'
@@ -189,7 +189,7 @@ export const ShardedAccess = forwardRef<HTMLDivElement, { number: number }>((pro
     <Page number={props.number} ref={ref} className="page-left">
       <h2 className="section-title">Zero-Copy Sharded Get</h2>
       <div className="content-block">
-        We can combine sharding with our <code>Ref</code> pattern from Stage 8 for maximum performance.
+        We can combine sharding with our <code>Ref</code> pattern from Stage 8.
       </div>
       <div className="code-snippet">
         <CodeBlock code={`fn get<Q>(&self, key: &Q) -> Option<Ref<'_, K, V>>
@@ -207,6 +207,12 @@ where Q: ?Sized + Hash + Eq, K: Borrow<Q>
       </div>
       <div className="content-block" style={{ marginTop: '1.5rem', fontSize: '0.9rem' }}>
         The caller holds a lock on <strong>only one shard</strong>, allowing readers to proceed on all other shards without interference.
+      </div>
+      <div className="explanation-box" style={{ background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)', fontSize: '0.8rem' }}>
+        <h3 style={{ fontSize: '0.9rem', color: 'var(--accent-color)', marginBottom: '0.4rem' }}>The Trade-off: Arc vs. Ref</h3>
+        In Stage 7, <strong>Arc</strong> allowed us to release the lock <strong>instantly</strong>, but we paid a "cloning handle" tax.
+        <br /><br />
+        By using <strong>Ref</strong> with <strong>Sharding</strong>, we get <strong>Zero Allocation</strong> on reads. However, because the lock is held until the <code>Ref</code> is dropped, <strong>writes to that shard are blocked</strong>. This pattern is best for high-frequency, <strong>short-duration</strong> reads. Sharding helps by ensuring a "greedy reader" only blocks one shard, not the entire cache.
       </div>
     </Page>
   );

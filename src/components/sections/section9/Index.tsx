@@ -128,7 +128,10 @@ export const SharedCacheArc = forwardRef<HTMLDivElement, { number: number }>((pr
         To make our cache truly "production-grade", we refactor it to be returned inside an <strong>Arc</strong>.
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`impl<K, V> Cache<K, V> {
+        <CodeBlock code={`impl<K, V> Cache<K, V>
+where
+    K: Hash + Eq,
+{
     pub fn new() -> Arc<Self> {
         Arc::new(Self {
             data: RwLock::new(HashMap::new()),
