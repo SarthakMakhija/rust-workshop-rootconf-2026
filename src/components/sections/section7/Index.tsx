@@ -129,7 +129,10 @@ export const ArcInsideCache = forwardRef<HTMLDivElement, { number: number }>((pr
         Let's modify our <code>Cache</code> to store values wrapped in <code>Arc</code>.
       </div>
       <div className="code-snippet">
-        <CodeBlock code={`struct Cache<K, V> {
+        <CodeBlock code={`struct Cache<K, V>
+where
+    K: Hash + Eq,
+{
     // HashMap now holds Arc-wrapped values
     data: RwLock<HashMap<K, Arc<V>>>,
 }`} style={{ fontSize: '0.85rem' }} />
