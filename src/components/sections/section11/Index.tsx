@@ -346,6 +346,7 @@ export const NonCooperativeCleaner = forwardRef<HTMLDivElement, { number: number
       </div>
       <div className="content-block" style={{ fontSize: '0.85rem', marginTop: '0.5rem' }}>
         We need a signaling mechanism (like a channel, an <code>AtomicBool</code> flag, or an Async runtime) to tell the thread to exit gracefully. We will solve this later with <strong>Type-States</strong>!
+        The complete integration of background cleaner will be done in Stage 13.
       </div>
     </Page>
   );

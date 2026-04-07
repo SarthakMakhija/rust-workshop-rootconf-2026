@@ -160,7 +160,12 @@ import {
   OwnershipTermination,
   TypeStateConcept,
   CompilerAsGuard,
-  Section13Summary
+  TypeStateLimitations,
+  HandleBodyPattern,
+  HandleBodyImplementation,
+  ImplementingShutdown,
+  CleanerExitLogic,
+  ShutdownVerification
 } from './sections/section13/Index';
 import { TOCLeft, TOCRight } from './sections/TOC';
 import {
@@ -393,16 +398,21 @@ const Book: React.FC = () => {
         <OwnershipTermination number={134} />
         <TypeStateConcept number={135} />
         <CompilerAsGuard number={136} />
-        <Section13Summary number={137} />
+        <TypeStateLimitations number={137} />
+        <HandleBodyPattern number={138} />
+        <HandleBodyImplementation number={139} />
+        <ImplementingShutdown number={140} />
+        <CleanerExitLogic number={141} />
+        <ShutdownVerification number={142} />
 
         {/* Stage 14 */}
-        <Section14Cover number={138} />
-        <Stage14Roadmap number={139} />
-        <TheBuilderPattern number={140} />
-        <CacheBuilderImpl number={141} />
-        <IntegrationTestingIntro number={142} />
-        <CacheIntegrationTest number={143} />
-        <WorkshopConclusion number={144} />
+        <Section14Cover number={143} />
+        <Stage14Roadmap number={144} />
+        <TheBuilderPattern number={145} />
+        <CacheBuilderImpl number={146} />
+        <IntegrationTestingIntro number={147} />
+        <CacheIntegrationTest number={148} />
+        <WorkshopConclusion number={149} />
 
       </HTMLFlipBook>
 
