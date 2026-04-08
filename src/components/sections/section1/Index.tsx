@@ -74,6 +74,7 @@ export const Stage1Roadmap = forwardRef<HTMLDivElement, { number: number }>((pro
           <li><strong>Method Receivers</strong>: <code>&self</code> vs <code>&mut self</code>.</li>
           <li><strong>String</strong>: Direct look at memory architecture.</li>
           <li><strong>Ownership</strong>: Automatic cleanup and constraints.</li>
+          <li><strong>Ownership Hierarchy</strong>: Nested owners.</li>
           <li><strong>The Allocation Problem</strong>: Finding our first bottleneck.</li>
           <li><strong>String vs &str vs str</strong>: Mastering Rust text.</li>
           <li><strong>Optimized Cache</strong>: Reaching Zero-Allocation.</li>
@@ -313,6 +314,110 @@ export const OwnershipDetails = forwardRef<HTMLDivElement, { number: number }>((
       <div className="content-block">
         <h3 style={{ marginBottom: '0.5rem' }}>3. Value Return</h3>
         However, a method that takes <span className="keyword">self</span> (not &self) can return the owned String because it consumes the struct itself!
+      </div>
+    </Page>
+  );
+});
+
+export const OwnershipHierarchy = forwardRef<HTMLDivElement, { number: number }>((props, ref) => {
+  return (
+    <Page number={props.number} ref={ref} className="page-right">
+      <h2 className="section-title">The Ownership Hierarchy</h2>
+      <div className="content-block" style={{ fontSize: '0.9rem' }}>
+        Ownership forms a tree. When you store a <code>String</code> inside a struct, and that struct inside a <code>Vec</code>, you are building a recursive chain of handles. In this example, <code>my_company</code> contains <b>2 employees</b>.
+      </div>
+
+      <div className="code-snippet">
+        <CodeBlock code={`struct Company { employees: Vec<Employee> }
+struct Employee { name: String }
+
+let my_company = Company::new();`} style={{ fontSize: '0.8rem' }} />
+      </div>
+
+      {/* Complex Memory Diagram */}
+      <div className="memory-viz-container" style={{ 
+        marginTop: '1rem', 
+        padding: '1.5rem', 
+        background: 'var(--bg-card)', 
+        borderRadius: '12px',
+        fontSize: '0.75rem',
+        fontFamily: "'JetBrains Mono', monospace"
+      }}>
+        
+        {/* Stack Level */}
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Stack</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ border: '2px solid var(--accent-color)', borderRadius: '6px', overflow: 'hidden', background: 'white' }}>
+              <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '4px 10px', borderBottom: '1px solid #eee', fontWeight: 'bold' }}>my_company (Vec Handle)</div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ padding: '6px 10px', borderRight: '1px solid #eee' }}><div style={{ opacity: 0.5, fontSize: '0.6rem' }}>ptr</div>0x88...10</div>
+                <div style={{ padding: '6px 10px', borderRight: '1px solid #eee' }}><div style={{ opacity: 0.5, fontSize: '0.6rem' }}>cap</div>2</div>
+                <div style={{ padding: '6px 10px' }}><div style={{ opacity: 0.5, fontSize: '0.6rem' }}>len</div>2</div>
+              </div>
+            </div>
+            <div style={{ color: 'var(--accent-color)', fontSize: '1.5rem' }}>❯❯ owning ❯❯</div>
+          </div>
+        </div>
+
+        {/* Heap Level 1 - The Vec Buffer */}
+        <div style={{ marginBottom: '2rem', paddingLeft: '2rem' }}>
+          <div style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Heap (Level 1: The Vec Buffer)</div>
+          <div style={{ display: 'flex', gap: '0px', border: '1px dashed #ccc', padding: '10px', width: 'fit-content', borderRadius: '8px' }}>
+            
+            {/* Employee 1 */}
+            <div style={{ border: '2px solid #475569', borderRadius: '4px', overflow: 'hidden', background: 'white', position: 'relative' }}>
+              <div style={{ background: '#f1f5f9', padding: '4px 8px', borderBottom: '1px solid #eee', fontWeight: 'bold', textAlign: 'center' }}>Employee [0]</div>
+              <div style={{ padding: '8px' }}>
+                <div style={{ border: '1px solid #94a3b8', borderRadius: '3px' }}>
+                   <div style={{ fontSize: '0.6rem', textAlign: 'center', background: '#f8fafc', color: '#64748b' }}>String Handle (24 bytes)</div>
+                   <div style={{ display: 'flex', background: '#fff' }}>
+                      <div style={{ padding: '4px 6px', borderRight: '1px solid #eee', color: '#2563eb' }}>ptr <span style={{ fontSize: '0.8rem' }}>↘</span></div>
+                      <div style={{ padding: '4px 6px', borderRight: '1px solid #eee' }}>cap: 8</div>
+                      <div style={{ padding: '4px 6px' }}>len: 7</div>
+                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ width: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc' }}>|</div>
+
+            {/* Employee 2 */}
+            <div style={{ border: '1px solid #cbd5e1', borderRadius: '4px', overflow: 'hidden', background: 'white', opacity: 0.7 }}>
+              <div style={{ background: '#f8fafc', padding: '4px 8px', borderBottom: '1px solid #eee', textAlign: 'center' }}>Employee [1]</div>
+              <div style={{ padding: '8px' }}>
+                 <div style={{ display: 'flex', border: '1px solid #e2e8f0', borderRadius: '3px' }}>
+                    <div style={{ padding: '4px 6px', borderRight: '1px solid #eee' }}>ptr</div>
+                    <div style={{ padding: '4px 6px', borderRight: '1px solid #eee' }}>cap</div>
+                    <div style={{ padding: '4px 6px' }}>len</div>
+                 </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Heap Level 2 - String Data */}
+        <div style={{ paddingLeft: '6rem' }}>
+          <div style={{ color: 'var(--accent-color)', fontWeight: 'bold', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Heap (Level 2: The Character Buffer)</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+             <div style={{ display: 'flex', border: '2px solid #2563eb', borderRadius: '4px', background: 'white', overflow: 'hidden' }}>
+                {['S', 'a', 'r', 't', 'h', 'a', 'k'].map((char, i) => (
+                  <div key={i} style={{ padding: '6px 10px', borderRight: i === 6 ? 'none' : '1px solid #eee', color: '#2563eb', fontWeight: 'bold' }}>{char}</div>
+                ))}
+             </div>
+             <div style={{ color: '#2563eb', fontStyle: 'italic', fontSize: '0.7rem' }}>← Pointed to by Employee[0].name.ptr</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="audience-question" style={{ marginTop: '1.5rem' }}>
+        <strong>The Recursion of Destruction:</strong>
+        <p style={{ fontSize: '0.8rem', marginTop: '0.4rem' }}>
+          When <code>my_company</code> goes out of scope, it doesn't just "free memory." It starts a chain reaction: <br/>
+          1. <code>Company</code> drops ❯ 2. <code>Vec</code> buffer is freed ❯ 3. <b>Each</b> <code>Employee</code> is dropped ❯ 4. <b>Each</b> <code>String</code> buffer is freed.
+        </p>
       </div>
     </Page>
   );
