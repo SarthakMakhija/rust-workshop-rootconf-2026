@@ -76,6 +76,22 @@ export const TOCRight = forwardRef<HTMLDivElement, { number: number }>((props, r
             <span className="toc-title">Final Integration & Production Readiness</span>
           </li>
         </ul>
+        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+          <a 
+            href="https://github.com/SarthakMakhija/rust-workshop-labs" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ 
+              color: 'var(--accent-color)',
+              textDecoration: 'none',
+              fontSize: '0.8rem',
+              opacity: 0.6,
+              letterSpacing: '0.05em'
+            }}
+          >
+            github.com/SarthakMakhija/rust-workshop-labs
+          </a>
+        </div>
       </div>
     </Page>
   );

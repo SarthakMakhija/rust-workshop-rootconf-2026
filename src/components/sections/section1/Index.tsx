@@ -57,6 +57,34 @@ export const Intro = forwardRef<HTMLDivElement, { number: number }>((props, ref)
       <div className="content-block">
         Over the next few modules, we'll journey from a simple implementation to a highly optimized cache that leverages Rust's unique memory model.
       </div>
+      
+      <div className="explanation-box" style={{ marginTop: '2.5rem', borderLeft: '4px solid var(--accent-color)', background: 'rgba(59, 130, 246, 0.05)' }}>
+        <h3 style={{ fontSize: '1rem', color: 'var(--accent-color)', marginBottom: '0.8rem' }}>🛠️ Hands-on Labs</h3>
+        <p style={{ fontSize: '0.85rem', marginBottom: '1.2rem' }}>
+          This workshop is interactive. Follow the exercises in the official lab repository to get the most out of each stage:
+        </p>
+        <a 
+          href="https://github.com/SarthakMakhija/rust-workshop-labs" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '0.6rem',
+            background: 'var(--accent-color)',
+            color: 'white',
+            textDecoration: 'none',
+            padding: '0.6rem 1.2rem',
+            borderRadius: '6px',
+            fontSize: '0.85rem',
+            fontWeight: '600',
+            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+          }}
+        >
+          <span>Clone Lab Repository</span>
+          <span style={{ fontSize: '1rem' }}>↗</span>
+        </a>
+      </div>
     </Page>
   );
 });
